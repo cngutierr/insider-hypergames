@@ -1,0 +1,71 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Admin vs Insider Level 1 Hypergame - Scenario 2 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Description: This hypergame captures the scenario where the administrator uses
+%%              bait but the insider is aware of the strategy. The admin thinks that
+%%              the insider is unaware of the possiblity of bait. The expected results 
+%%              are that insider decides its best to behave and not risk detection.
+%% 
+%% Motivation:  The goal is is to capture the usage of deception in computer systems.
+%%              Although it seems trivial, this hypergame shows that it is best to use
+%%              when bait.
+%% 
+%% Next steps:  Create a 2nd level hypergame using scenario 1 and 2. Create a new
+%%              scenario where the admin doesn't use bait but the insider thinks 
+%%              that the admin is using bait. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{
+ {
+  {Administrator},
+  {
+   {Administrator,{{#1,Bait},{#2,Incident Response}},{{#1,#2}},
+    {
+     %%Bait I.R.    Prob 
+     {#1=0, #2=0,   #3=0}, %%1 Maintain systems and the insider to behaves
+     {#1=1, #2=0,   #3=1}, %%2 Bait the insider while insider probes
+     {#1=1, #2=0,   #3=0}, %%3 Bait when the insider behaves
+     {#1=0, #2=1,   #3=0}, %%4 Inc. Rsp. and insider behaves
+     {#1=0, #2=1,   #3=1}, %%5 Inc. Rsp. when the insider probes
+     {#1=0, #2=0,   #3=1}  %%6 Maintain the system while the insider probes
+    }
+   },
+   {Insider,{{#3,Probe}},{},
+    {  
+    %%Bait  In.R.    Probe 
+     {#1=0, #2=0,    #3=1}, %%1 Probe while the admin maintains
+     {#1=0, #2=0,    #3=0}, %%2 Normal while the admin maintains
+     {#1=0, #2=1,    #3=0}, %%3 Inc. Rsp while insider behaves
+     {#1=0, #2=1,    #3=1}  %%4 Inc. Rsp. while the insider probes
+    }
+   }
+  }
+ },
+
+ {
+  {Insider},
+  {
+   {Administrator,{{#1,Bait},{#2,Incident Response}},{{#1,#2}},
+    {
+      %%Bait  I.R.    Probe
+      {#1=1,  #2=0,   #3=1}, %%1 PREVENTION Admin uses bait while insider probes
+      {#1=0,  #2=0,   #3=0}, %%2 IDEAL - Admin maintains while insider behaves
+      {#1=1,  #2=0,   #3=0}, %%3 PRECAUTION - Admin uses bait while insider behaves
+      {#1=0,  #2=1,   #3=0}, %%4 FALSE ACCUSATION - Admin inc rsp while insider behaves
+      {#1=0,  #2=1,   #3=1}, %%5 DATA DISCLOSED - Admin sends inc rsp while insider probes
+      {#1=0,  #2=0,   #3=1}  %%6 BREACH - Admin maintains while insider probes
+    } 
+   },
+   {Insider,{{#3,Probe}},{},
+    {
+      %%Bait   I.R.   Prob
+      {#1=0,  #2=0,   #3=1}, %%1 BREACH - Insider probes while admin maintains
+      {#1=0,  #2=0,   #3=0}, %%2 IDEAL -Insider behaves while admin maintains
+      {#1=0,  #2=1,   #3=0}, %%3 FALSE ACCUSATION - Insider behaves admin sends inc rsp
+      {#1=1,  #2=0,   #3=0}, %%4 PRECAUTION - Admin baits while insider behaves 
+      {#1=0,  #2=1,   #3=1}, %%5 DATA DISCLOSED - Insider probes while admin sends inc rsp
+      {#1=1,  #2=0,   #3=1}  %%6 PREVENTION Insider probes while admin sends bait
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,71 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Admin vs Insider Level 1 Hypergame - Scenario 3 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Description: This hypergame captures the scenario where the administrator doesn't use
+%%              bait but the insider thinks that the admin is using bait. The admin only
+%%              responds to incidents with Inc. Rsp. The expected results are that the 
+%%              insider decides its best to behave and not risk detection even though no
+%%              bait is ever used by the administrator..
+%% 
+%% Motivation:  The goal is is to capture the usage of deception in computer systems.
+%%              Although it seems trivial, this hypergame shows that even though the 
+%%              administrator is not using bait, the perception of using bait itself
+%%              is enough to fool an insider into behaving.
+%% 
+%% Next steps:  Create a 2nd level hypergame using scenario 1 and 2. Create a new
+%%              scenario where the admin doesn't use bait but the insider thinks 
+%%              that the admin is using bait. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{
+ {
+  {Administrator},
+  {
+   {Administrator,{{#1,Bait},{#2,Incident Response}},{{#1,#2}},
+    {
+      %%Bait   I.R.    Prob
+      {#1=0,  #2=0,   #3=0}, %%1 Ideal
+      {#1=0,  #2=1,   #3=0}, %%2 False Acc
+      {#1=0,  #2=1,   #3=1}, %%3 Data Disclosure
+      {#1=0,  #2=0,   #3=1}  %%4 Breach
+    }
+   },
+   {Insider,{{#3,Probe}},{},
+     {
+      %%Bait In.R.  Probe
+      {#1=0, #2=0,  #3=1}, %%1 Breach
+      {#1=0, #2=0,  #3=0}, %%2 Ideal
+      {#1=0, #2=1,  #3=0}, %%3 False acc
+      {#1=0, #2=1,  #3=1}  %%4 Data Disclosure
+     }
+   }
+  }
+ },
+
+ {
+  {Insider},
+  {
+   {Administrator,{{#1,Bait},{#2,Incident Response}},{{#1,#2}},
+    {
+      %%Bait  I.R.   Prob
+      {#1=0,  #2=0,  #3=0}, %%2 Ideal
+      {#1=1,  #2=0,  #3=1}, %%1 Prevention
+      {#1=1,  #2=0,  #3=0}, %%3 Precation 
+      {#1=0,  #2=1,  #3=0}, %%4 False Acc
+      {#1=0,  #2=1,  #3=1}, %%5 Data Disclosure
+      {#1=0,  #2=0,  #3=1}  %%6 Breach
+    }
+   },
+   {Insider,{{#3,Probe}},{},
+    {
+      %%Bait   I.R.  Prob
+      {#1=0,  #2=0,  #3=1}, %%1 Breach
+      {#1=0,  #2=0,  #3=0}, %%2 Ideal
+      {#1=0,  #2=1,  #3=0}, %%3 False Acc
+      {#1=1,  #2=0,  #3=0}, %%4 Precausion 
+      {#1=0,  #2=1,  #3=1}, %%5 Data Disclosure
+      {#1=1,  #2=0,  #3=1}  %%6 Prevention
+    }
+   }
+  }
+ }
+}
